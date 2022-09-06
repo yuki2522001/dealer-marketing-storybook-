@@ -5,17 +5,17 @@ import React, { lazy, Suspense, useContext, useEffect } from "react";
 const Navigation = lazy(() => import("@components/common/Navigation"));
 const ExpertList = lazy(() => import("@components/ExpertList"));
 const Text = lazy(() => import("@components/common/Text"));
-import { TextType } from "@components/common/Text";
+import { SizeType } from "@components/common/Text";
 import { Loader } from "@components/common";
 
 // common-types
-import { Expert } from "@common-types/expert";
+import { Expert } from "@self-types/expert";
 
 // api
 import { EXPERT_RESPONSE_DATA } from "@api-backup/expertResponseData";
 
 // layouts
-import Layout from "@layouts";
+import Layout from "@layouts/index";
 
 // context
 import { ExpertContext } from "@context/ExpertContext";
@@ -63,7 +63,7 @@ const OurExpertPage: React.FC<OurExpertProps> = ({ experts, errorCode }) => {
           <h2 className={style["our-expert-heading"]}>The DMM Expert Panel</h2>
           <Suspense fallback={<Loader />}>
             <Text
-              size={TextType.regular}
+              size={SizeType.regular}
               text="Our Expert Panel consists of thirty automotive industry experts who share their knowledge and experience to help keep dealers informed on various topics such as Business Development, Dealership Business, Fixed Ops, Internet Marketing, Advertising, AI, Tech Solutions, Industry & Consumer Research, and more. With a combined LinkedIn following of 113,000+ followers, as an automotive industry professional or vendor, you are guaranteed to learn something new."
             />
           </Suspense>

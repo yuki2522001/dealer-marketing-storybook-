@@ -4,13 +4,12 @@ import { GetStaticProps } from "next";
 import { ParsedUrlQuery } from "querystring";
 
 // common-types
-import { Expert } from "@common-types/expert";
+import { Expert } from "@self-types/expert";
 
 // components
 const Navigation = lazy(() => import("@components/common/Navigation"));
 const Banner = lazy(() => import("@components/common/Banner"));
 const Text = lazy(() => import("@components/common/Text"));
-import { TextType } from "@components/common/Text";
 import { Loader } from "@components/common";
 
 // api
@@ -20,8 +19,9 @@ import { EXPERT_RESPONSE_DATA } from "@api-backup/expertResponseData";
 import { IMAGE } from "@constants/image";
 
 // layouts
-import Layout from "@layouts";
+import Layout from "@layouts/index";
 import style from "./expert.module.css";
+import { SizeType, ThemeType } from "@components/common/Text";
 
 interface ExpertProps {
   expert: Expert;
@@ -89,11 +89,11 @@ const OurExpert: React.FC<ExpertProps> = ({ expert }) => {
           <h2 className={style["expert-detail-name"]}>{name}</h2>
           <div className={style["expert-detail-content"]}>
             <Suspense fallback={<Loader />}>
-              <Text size={TextType.regularDark} text={info} />
+              <Text theme={ThemeType.primary} text={info} />
             </Suspense>
           </div>
           <Suspense fallback={<Loader />}>
-            <Text size={TextType.regular} text={description} />
+            <Text size={SizeType.regular} text={description} />
           </Suspense>
         </div>
       </div>

@@ -1,20 +1,20 @@
 import React, { memo } from "react";
-import Link from "next/link";
 import Image from "next/image";
 import { Button, Text } from "@components/common";
-import { Blog, BlogLayoutType, BlogContentType } from "@common-types/blog";
-import { Expert } from "@common-types/expert";
+import { Blog, BlogLayoutType, BlogContentType } from "@self-types/blog";
+import { Expert } from "@self-types/expert";
 import { ButtonType } from "@components/common/Button";
-import { TextType } from "@components/common/Text";
 import { EXPERT_MOCKING } from "@constants/expert";
 import { IMAGE } from "@constants/image";
+import { SizeType, ThemeType } from "@components/common/Text";
+import CustomLink from "@components/common/CustomLink";
 import styleResearch from "./card.module.css";
 
 interface CardProps {
   layout?: string;
   content?: string;
   imageSmall?: boolean;
-  isButton?: boolean;
+  hasButton?: boolean;
   blog: Blog;
   expert?: Expert;
 }
@@ -23,7 +23,7 @@ const Card: React.FC<CardProps> = ({
   imageSmall = false,
   layout = BlogLayoutType.center,
   content = BlogContentType.center,
-  isButton = true,
+  hasButton = true,
   blog,
   expert = EXPERT_MOCKING,
 }) => {
@@ -54,28 +54,33 @@ const Card: React.FC<CardProps> = ({
           />
         )}
         <div className={styleResearch[`research-${content}`]}>
-          <p className={styleResearch["research-title"]}>Research & analysis</p>
+          <div className={styleResearch["research-title"]}>
+            <Text text="Research & analysis" />
+          </div>
           <div className={styleResearch["research-content"]}>
             <div className={styleResearch["research-heading"]}>
-              <Link href={`/${blog?.slug}`} passHref>
-                <Text size={TextType.mediumOutline} text={blog?.title} />
-              </Link>
+              <CustomLink
+                href={`/${blog?.slug}`}
+                children={<Text theme={ThemeType.light} text={blog?.title} />}
+              />
             </div>
-            <div>
-              <p className={styleResearch["research-description"]}>
-                By{" "}
-                <Link href={`/expert-page/${expert.slug}`}>
-                  <span className={styleResearch["research-author"]}>
-                    {blog.expertId}{" "}
-                  </span>
-                </Link>
-                - <span>{blog?.createDate}</span>
-              </p>
-              <Text size={TextType.normal} text={blog?.description} />
+            <div className={styleResearch["research-description"]}>
+              <Text
+                text={`
+                  By${" "}
+                  <Link href={"/expert-page/${expert.slug}"}>
+                    <span class=${styleResearch["research-author"]}>
+                      ${blog.expertId + " "}
+                    </span>
+                  </Link>
+                  - <span>${blog?.createDate}</span>
+                  `}
+              />
             </div>
+            <Text size={SizeType.normal} text={blog?.description} />
           </div>
           <div className={styleResearch["research-button"]}>
-            {isButton ? (
+            {hasButton ? (
               <Button type={ButtonType.primary} text="Read more" />
             ) : (
               ""

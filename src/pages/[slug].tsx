@@ -4,22 +4,22 @@ import { GetStaticProps } from "next";
 import { ParsedUrlQuery } from "querystring";
 
 // common-types
-import { Blog } from "@common-types/blog";
+import { Blog } from "@self-types/blog";
 
 // components
 const Navigation = lazy(() => import("@components/common/Navigation"));
 const Banner = lazy(() => import("@components/common/Banner"));
 const Text = lazy(() => import("@components/common/Text"));
-import { TextType } from "@components/common/Text";
 import { Loader } from "@components/common";
 
 // api
 import { BLOG_RESPONSE_DATA } from "@api-backup/blogResponseData";
 
 // layouts
-import Layout from "@layouts";
+import Layout from "@layouts/index";
 import style from "./style.module.css";
 import { IMAGE } from "@constants/image";
+import { SizeType, ThemeType } from "@components/common/Text";
 
 interface BlogProps {
   blog: Blog;
@@ -74,7 +74,7 @@ const BlogDetail: React.FC<BlogProps> = ({ blog }) => {
           <div className={style["blog-detail-card"]}>
             <div className={style["blog-detail-title"]}>
               <Suspense fallback={<Loader />}>
-                <Text size={TextType.largeDark} text={title} />
+                <Text theme={ThemeType.dark} text={title} />
               </Suspense>
             </div>
             <hr />
@@ -92,13 +92,15 @@ const BlogDetail: React.FC<BlogProps> = ({ blog }) => {
                 <p>
                   by <span>{expertId}</span>
                 </p>
-                <p>{createDate}</p>
+                <Suspense fallback={<Loader />}>
+                  <Text theme={ThemeType.primary} text={createDate} />
+                </Suspense>
               </div>
             </div>
           </div>
           <hr />
           <Suspense fallback={<Loader />}>
-            <Text size={TextType.regular} text={description} />
+            <Text size={SizeType.regular} text={description} />
           </Suspense>
         </div>
       </div>

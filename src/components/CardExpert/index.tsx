@@ -1,13 +1,14 @@
 import React, { memo } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Expert, ExpertContentType } from "@common-types/expert";
+import { Expert, ExpertContentType } from "@self-types/expert";
 import { EXPERT_MOCKING } from "@constants/expert";
 import { Button, Text } from "@components/common";
-import { TextType } from "@components/common/Text";
-import styleCardExpert from "./cardExpert.module.css";
 import { IMAGE } from "@constants/image";
 import { ButtonType } from "@components/common/Button";
+import { ThemeType } from "@components/common/Text";
+import CustomLink from "@components/common/CustomLink";
+import styleCardExpert from "./cardExpert.module.css";
 
 interface CardExpertProps {
   isImage?: boolean;
@@ -25,12 +26,12 @@ interface CardExpertProps {
 
 const CardExpert: React.FC<CardExpertProps> = ({
   isImage = false,
-  url = IMAGE.url,
-  alt = IMAGE.alt,
+  url = IMAGE.urlExpert,
+  alt = IMAGE.altExpert,
   isDescription = false,
   isLayoutImage = false,
-  urlContact = IMAGE.url,
-  altContact = IMAGE.alt,
+  urlContact = IMAGE.urlContact,
+  altContact = IMAGE.altContact,
   expert = EXPERT_MOCKING,
   layout = ExpertContentType.border,
   description = "This is description of interviews",
@@ -61,16 +62,18 @@ const CardExpert: React.FC<CardExpertProps> = ({
         />
       </figure>
     )}
-
     {isDescription ? (
-      <p className={styleCardExpert["card-description"]}>{description}</p>
+      <div className={styleCardExpert["card-description"]}>
+        <Text text={description} />
+      </div>
     ) : (
-      <Link href={`/expert-page/${expert.slug}`} passHref>
-        <Text size={TextType.regularOutline} text={expert?.name} />
-      </Link>
+      <CustomLink
+        href={`/expert-page/${expert.slug}`}
+        children={<Text size={ThemeType.secondary} text={expert?.name} />}
+      />
     )}
     {isImage ? (
-      <figure className={styleCardExpert["card-contact"]}>
+      <div className={styleCardExpert["card-contact"]}>
         <Image
           src={urlContact}
           alt={altContact}
@@ -80,7 +83,7 @@ const CardExpert: React.FC<CardExpertProps> = ({
           placeholder="blur"
           blurDataURL={IMAGE.blurDataURL}
         />
-      </figure>
+      </div>
     ) : (
       <>
         <div className={styleCardExpert["card-info"]}>
