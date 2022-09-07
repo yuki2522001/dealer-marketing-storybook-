@@ -48,12 +48,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
 const Home: NextPage<HomeProps> = ({ blogs, errorCode }) => {
   const { handleUpdateBlogs } = useContext(BlogContext);
-  const fetchDataBlog = async () => {
-    const data = axios.get(BLOGS_URL);
-    console.log("data", data);
-  };
   useEffect(() => {
-    fetchDataBlog();
     handleUpdateBlogs(errorCode, blogs);
   }, []);
 
