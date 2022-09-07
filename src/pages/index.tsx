@@ -1,3 +1,4 @@
+import axios from "axios";
 import type { GetStaticProps, NextPage } from "next";
 import { lazy, Suspense, useContext, useEffect } from "react";
 
@@ -16,11 +17,9 @@ import { IMAGE } from "@constants/image";
 // context
 import { BlogContext } from "@context/BlogContext";
 
-// api
-import { BLOG_RESPONSE_DATA } from "@api-backup/blogResponseData";
-
 // layouts
 import Layout from "@layouts/index";
+import { BLOGS_URL } from "@constants/url";
 
 interface HomeProps {
   blogs: Blog[];
@@ -29,7 +28,8 @@ interface HomeProps {
 
 export const getStaticProps: GetStaticProps = async () => {
   try {
-    const blogs: Blog[] = BLOG_RESPONSE_DATA;
+    const res = await axios.get(BLOGS_URL);
+    const blogs = res.data;
     return {
       props: {
         blogs: blogs,
@@ -48,7 +48,12 @@ export const getStaticProps: GetStaticProps = async () => {
 
 const Home: NextPage<HomeProps> = ({ blogs, errorCode }) => {
   const { handleUpdateBlogs } = useContext(BlogContext);
+  const fetchDataBlog = async () => {
+    const data = axios.get(BLOGS_URL);
+    console.log("data", data);
+  };
   useEffect(() => {
+    fetchDataBlog();
     handleUpdateBlogs(errorCode, blogs);
   }, []);
 

@@ -11,15 +11,14 @@ import { Loader } from "@components/common";
 // common-types
 import { Expert } from "@self-types/expert";
 
-// api
-import { EXPERT_RESPONSE_DATA } from "@api-backup/expertResponseData";
-
 // layouts
 import Layout from "@layouts/index";
 
 // context
 import { ExpertContext } from "@context/ExpertContext";
 import style from "./expert.module.css";
+import { EXPERTS_URL } from "@constants/url";
+import axios from "axios";
 
 interface OurExpertProps {
   experts: Expert[];
@@ -28,7 +27,9 @@ interface OurExpertProps {
 
 export const getStaticProps: GetStaticProps = async () => {
   try {
-    const experts: Expert[] = EXPERT_RESPONSE_DATA;
+    const res = await axios.get(EXPERTS_URL);
+    const experts = res.data;
+
     return {
       props: {
         experts: experts,

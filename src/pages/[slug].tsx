@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { lazy, Suspense } from "react";
 import Image from "next/image";
 import { GetStaticProps } from "next";
@@ -12,14 +13,12 @@ const Banner = lazy(() => import("@components/common/Banner"));
 const Text = lazy(() => import("@components/common/Text"));
 import { Loader } from "@components/common";
 
-// api
-import { BLOG_RESPONSE_DATA } from "@api-backup/blogResponseData";
-
 // layouts
 import Layout from "@layouts/index";
 import style from "./style.module.css";
 import { IMAGE } from "@constants/image";
 import { SizeType, ThemeType } from "@components/common/Text";
+import { BLOGS_URL } from "@constants/url";
 
 interface BlogProps {
   blog: Blog;
@@ -30,7 +29,8 @@ interface IParams extends ParsedUrlQuery {
 }
 
 export const getStaticPaths = async () => {
-  const blogs: Blog[] = BLOG_RESPONSE_DATA;
+  const res = await axios.get(BLOGS_URL);
+  const blogs = res.data;
 
   const paths = blogs.map((blog: Blog) => {
     return {
@@ -43,11 +43,12 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async (context) => {
   const { slug } = context.params as IParams;
-  const res = BLOG_RESPONSE_DATA.filter((item) => item.slug == slug);
+  const res = await axios.get(BLOGS_URL);
+  const blogs = res.data.filter((item: Blog) => item.slug == slug);
 
   return {
     props: {
-      blog: res[0],
+      blog: blogs[0],
     },
   };
 };

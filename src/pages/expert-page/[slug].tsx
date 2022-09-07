@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { lazy, Suspense } from "react";
 import Image from "next/image";
 import { GetStaticProps } from "next";
@@ -12,9 +13,6 @@ const Banner = lazy(() => import("@components/common/Banner"));
 const Text = lazy(() => import("@components/common/Text"));
 import { Loader } from "@components/common";
 
-// api
-import { EXPERT_RESPONSE_DATA } from "@api-backup/expertResponseData";
-
 // constants
 import { IMAGE } from "@constants/image";
 
@@ -22,6 +20,7 @@ import { IMAGE } from "@constants/image";
 import Layout from "@layouts/index";
 import style from "./expert.module.css";
 import { SizeType, ThemeType } from "@components/common/Text";
+import { EXPERTS_URL } from "@constants/url";
 
 interface ExpertProps {
   expert: Expert;
@@ -32,7 +31,8 @@ interface IParams extends ParsedUrlQuery {
 }
 
 export const getStaticPaths = async () => {
-  const experts: Expert[] = EXPERT_RESPONSE_DATA;
+  const res = await axios.get(EXPERTS_URL);
+  const experts = res.data;
 
   const paths = experts.map((expert: Expert) => {
     return {
@@ -45,11 +45,12 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async (context) => {
   const { slug } = context.params as IParams;
-  const res = EXPERT_RESPONSE_DATA.filter((item) => item.slug == slug);
+  const res = await axios.get(EXPERTS_URL);
+  const experts = res.data.filter((item: Expert) => item.slug == slug);
 
   return {
     props: {
-      expert: res[0],
+      expert: experts[0],
     },
   };
 };
