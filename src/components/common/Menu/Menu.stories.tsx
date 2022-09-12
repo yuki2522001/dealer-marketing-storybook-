@@ -21,13 +21,3 @@ export const MenuList = TemplateMenu.bind({});
 MenuList.args = {
   menuList: ROUTER_LIST,
 };
-
-export const MenuService = TemplateMenu.bind({});
-MenuService.args = {
-  menuList: ROUTER_SERVICES,
-};
-
-export const MenuContact = TemplateMenu.bind({});
-MenuContact.args = {
-  menuList: ROUTER_CONTACT,
-};
